@@ -19,6 +19,11 @@ public class BillettController {
         rep.slettAlleBilletter();
     }
 
+    @GetMapping("/slettEnBillett")
+    public void slettEnBillett(Integer id){
+     rep.slettEnBillett(id);
+    }
+
     // Henter inn billetten og legger den til i arraylisten
     @PostMapping("/lagre")
     public void save(Billett innbillett) {
@@ -33,5 +38,14 @@ public class BillettController {
         return rep.hentBilletter();
     }
 
+    @GetMapping("/hentEnBillett")
+    public Billett hentEnBillett(Integer id){
+        return rep.hentEnBillett(id);
+    }
+
+    @PostMapping("/endreEnBillett")
+    public void endreEnBillett1(Billett billett){
+        rep.endreEnBillett(billett);
+    }
 
 }

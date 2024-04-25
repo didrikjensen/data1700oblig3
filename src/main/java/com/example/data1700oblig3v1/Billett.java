@@ -2,6 +2,8 @@ package com.example.data1700oblig3v1;
 
 //Java-class for å opprette et billett-objekt
 public class Billett {
+
+    Integer id;
     String film;
     int antall;
     String fornavn;
@@ -9,7 +11,8 @@ public class Billett {
     int telefon;
     String email;
 
-    public Billett(String film, int antall, String fornavn, String etternavn, int telefonNummer, String email) {
+    public Billett(Integer id,String film, int antall, String fornavn, String etternavn, int telefonNummer, String email) {
+        this.id = id;
         this.film = film;
         this.antall = antall;
         this.fornavn = fornavn;
@@ -21,6 +24,15 @@ public class Billett {
     public Billett(){
 
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     public String getFilm() {
         return film;

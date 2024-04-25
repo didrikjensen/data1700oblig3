@@ -18,7 +18,7 @@ let emailInputValidert;
 const antallRegEx = /^[1-9][0-9]?$|^100$/;
 const navnRegEx = /^([a-zA-Z-]{1,20})$/;
 const telefonRegEx = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/;
-const emailRegEx = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})([a-z]{2,8})?$/;
+const emailRegEx = /^([a-z\d\-]+)@([a-z\d-]+)\.([a-z]{2,8})([a-z]{2,8})?$/;
 
 //Instansierer en ooutput variabel som senere brukes som string for å legge til billettene på siden
 let output;
@@ -164,17 +164,27 @@ function opprettBillett() {
 
 //Hentbillett henter arrayet som opprettes i backend og sender det til funksjonen formater-billett
 function hentBillett() {
-    $.get("/hentBilletter", function (vis) {
-        formaterBillett(vis)
+    $.get("/hentBilletter", function (billetter) {
+        formaterBillett(billetter)
+        console.log(billetter[0].id)
     });
 }
 
 //Denne funksjonen formaterer arrayet til en enkel html tabell.
-function formaterBillett(vis) {
+function formaterBillett(billetter) {
     output = "";
-    output += "<table class='table table-dark'><tr><th>Film</th><th>Antall</th><th>Fornavn</th><th>Etternavn</th><th>Telefonnummer</th><th>Email</th></tr>"
-    for (let billett of vis) {
-        output += "<tr><td>" + billett.film + "</td><td>" + billett.antall + " </td><td>" + billett.fornavn + "</td><td>" + billett.etternavn + "</td><td>" + billett.telefon + "</td><td>" + billett.email + "</td></tr>";
+    output += "<table class='table table-dark w-100'><tr><th>Film</th><th>Antall</th><th>Fornavn</th><th>Etternavn</th><th>Telefonnummer</th><th>Email</th></tr>"
+    for (let i of billetter) {
+        output +=   "<tr>" +
+                    "<td>" + i.film + "</td>" +
+                    "<td>" + i.antall + " </td>" +
+                    "<td>" + i.fornavn + "</td>" +
+                    "<td>" + i.etternavn + "</td>" +
+                    "<td>" + i.telefon + "</td>" +
+                    "<td>" + i.email + "</td>" +
+                    "<td><a class='btn btn-primary' href='endreBillett.html?id='" + i.id + ">Endre</a></td>"+
+                    "<td><button class='btn btn-danger' onclick='slettEnBillett(" + i.id + ")'>Slett</button></td>"+
+                    "</tr>";
     }
     output += "</table>";
     outputDiv.html(output);
@@ -186,6 +196,14 @@ function slettBillett() {
     });
     output = "";
     outputDiv.html(output)
+}
+
+function slettEnBillett(id){
+    const url = "/slettEnBillett?id"+id;
+    $.get( url, function (){
+        window.location.href = "index.html"
+        }
+    )
 }
 
 //Denne funksjonen setter select indexen til 0 som da er emn placeholder, før den bruker reset funksjonen til jquery for å tømme inputfeltene
